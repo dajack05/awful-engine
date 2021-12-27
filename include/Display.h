@@ -13,8 +13,10 @@ void DisplayPresent();
 void DisplaySetChar(u8 x, u8 y, char c);
 void DisplaySetStr(u8 x, u8 y, const char *str);
 
-void DisplayDrawSprite(struct Sprite *sprite);
-
 void DisplayClear();
+
+void DrawSprite(struct Sprite *sprite);
+
+void DrawLine(u8 from_x, u8 from_y, u8 to_x, u8 to_y);
 
 #endif

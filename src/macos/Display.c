@@ -20,7 +20,6 @@ void wipeScreen() {
 }
 
 void DisplayInit(u8 width, u8 height, bool wide) {
-  printf("Init Display\n");
   mWidth = width;
   mHeight = height;
   mWide = wide;
@@ -68,18 +67,18 @@ void DisplaySetStr(u8 x, u8 y, const char *str) {
   }
 }
 
-void DisplayDrawSprite(struct Sprite *sprite) {
+void DrawSprite(struct Sprite *sprite) {
   for (int y = 0; y < sprite->h; y++) {
     for (int x = 0; x < sprite->w; x++) {
       int idx = x + y * sprite->w;
       // Skip if we're 'transparent'
       if (sprite->data[idx] != ' ') {
-        int finalx = sprite->x + x;
-        int finaly = sprite->y + y;
+        int finalx = (int)sprite->x + x;
+        int finaly = (int)sprite->y + y;
 
         // Don't draw out of bounds
         if (finalx < mWidth && finaly < mHeight && finalx >= 0 && finaly >= 0) {
-          DisplaySetChar(sprite->x + x, sprite->y + y, sprite->data[idx]);
+          DisplaySetChar(finalx, finaly, sprite->data[idx]);
         }
       }
     }
@@ -91,5 +90,49 @@ void DisplayClear() {
     printf("\n");
   }
 }
+
+void DrawLine(u8 x0, u8 y0, u8 x1, u8 y1) {
+  float x, y, dx, dy, steps;
+  dx = (float)(x1 - x0);
+  dy = (float)(y1 - y0);
+  if (dx >= dy) {
+    steps = dx;
+  } else {
+    steps = dy;
+  }
+  dx = dx / steps;
+  dy = dy / steps;
+  x = x0;
+  y = y0;
+  float i = 1;
+  while (i <= steps) {
+    DisplaySetChar(x, y, '*');
+    x += dx;
+    y += dy;
+    i = i + 1;
+  }
+}
+
+// void DrawLine(u8 x0, u8 y0, u8 x1, u8 y1) {
+//   char c = '*';
+
+//   int dx = x1 - x0;
+//   int dy = y1 - y0;
+//   int p = 2 * dy - dx;
+//   int x = x0;
+//   int y = y0;
+
+//   while (x < x1) {
+//     if (p >= 0) {
+//       DisplaySetChar(x, y, c);
+//       y = y + 1;
+//       p = p + 2 * dy - 2 * dx;
+//     } else {
+//       DisplaySetChar(x, y, c);
+//       p = p + 2 * dy;
+//     }
+//     x = x + 1;
+//   }
+// }
 
 #endif

@@ -95,9 +95,13 @@ int main(int argc, char **argv) {
     }
 
     // Draw
-    DisplayDrawSprite(&shape);
-    DisplayDrawSprite(&player);
-    DisplayDrawSprite(&plane);
+    DrawSprite(&shape);
+
+    DrawLine(plane.x + (plane.w / 2), plane.y + 3, player.x + player.w / 2,
+             player.y + 1);
+
+    DrawSprite(&player);
+    DrawSprite(&plane);
 
     DisplayPresent();
     frame++;

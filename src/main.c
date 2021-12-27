@@ -66,9 +66,9 @@ int main(int argc, char **argv) {
 
     // Plane Movement
     if (planeFacingRight) {
-      plane.x += 0.4;
+      plane.x += 1.0;
     } else {
-      plane.x -= 0.4;
+      plane.x -= 1.0;
     }
 
     plane.y = (int)(5.0 - sin(t / 2.0) * 5.0);

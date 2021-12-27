@@ -2,8 +2,8 @@
 #define H_SPRITE
 
 struct Sprite {
-  int x;
-  int y;
+  double x;
+  double y;
   int w;
   int h;
   const char *data;

@@ -8,13 +8,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define SCREEN_HEIGHT 30
+#define SCREEN_HEIGHT 50
 #define SCREEN_WIDTH (SCREEN_HEIGHT * 2)
 
 void sleepUntilFPS(u16 targetFPS, u64 startTime) {
   u64 now = SystemTime();
-  u64 timePerFrame = 1000 / targetFPS;
-  while (now - startTime <= timePerFrame) {
+  double timePerFrame = 1000.0 / targetFPS;
+  while ((double)(now - startTime) <= timePerFrame) {
     now = SystemTime();
   }
 }
@@ -42,8 +42,8 @@ int main(int argc, char **argv) {
   plane.h = 4;
   plane.data = PLANE_RIGHT;
 
-  int shapeVelX = 1;
-  int shapeVelY = 1;
+  float shapeVelX = 0.2F;
+  float shapeVelY = 0.2F;
   struct Sprite shape;
   shape.x = 0;
   shape.y = 0;
@@ -55,21 +55,23 @@ int main(int argc, char **argv) {
   u32 frame = 0;
   while (should_run) {
     u64 startTime = SystemTime();
+    double t = (double)startTime / 1000.0F;
 
     DisplayClear();
 
     // Update
-    player.x = (SCREEN_WIDTH / 2) - (player.w / 2) + cos(startTime) * 7;
-    player.y = SCREEN_HEIGHT - player.h - fabs(sin(startTime) * 12);
+    player.x = (int)((SCREEN_WIDTH / 2.0) - (player.w / 2) +
+                     cos(t) * (SCREEN_WIDTH / 3.0));
+    player.y = SCREEN_HEIGHT - player.h - fabs(sin(t) * (SCREEN_HEIGHT / 2.0));
 
     // Plane Movement
     if (planeFacingRight) {
-      plane.x += 2;
+      plane.x += 0.4;
     } else {
-      plane.x -= 2;
+      plane.x -= 0.4;
     }
 
-    plane.y = 2 - sin(startTime / 4) * 2;
+    plane.y = (int)(5.0 - sin(t / 2.0) * 5.0);
 
     // Plane Logic
     if (plane.x >= SCREEN_WIDTH - plane.w) {

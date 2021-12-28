@@ -3,6 +3,7 @@
 #ifdef __MACOS__
 
 #include <Display.h>
+#include <math.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -91,47 +92,51 @@ void DisplayClear() {
   }
 }
 
-void DrawLine(u8 x0, u8 y0, u8 x1, u8 y1) {
-  float x, y, dx, dy, steps;
-  dx = (float)(x1 - x0);
-  dy = (float)(y1 - y0);
-  if (dx >= dy) {
-    steps = dx;
-  } else {
-    steps = dy;
+void DrawLine(s8 x0, s8 y0, s8 x1, s8 y1) {
+  const char c = '*';
+  double dx = x1 - x0;
+  double dy = y1 - y0;
+
+  double length = fabs(dy);
+  if (fabs(dx) >= length) {
+    length = fabs(dx);
   }
-  dx = dx / steps;
-  dy = dy / steps;
-  x = x0;
-  y = y0;
-  float i = 1;
-  while (i <= steps) {
-    DisplaySetChar(x, y, '*');
+
+  dx = dx / length;
+  dy = dy / length;
+
+  double x = x0;
+  double y = y0;
+
+  DisplaySetChar((u8)x, (u8)y, c);
+  int i = 1;
+  while (i <= length) {
     x += dx;
     y += dy;
-    i = i + 1;
+    DisplaySetChar((u8)x, (u8)y, c);
+    i++;
   }
 }
 
-// void DrawLine(u8 x0, u8 y0, u8 x1, u8 y1) {
-//   char c = '*';
-
-//   int dx = x1 - x0;
-//   int dy = y1 - y0;
-//   int p = 2 * dy - dx;
-//   int x = x0;
-//   int y = y0;
-
-//   while (x < x1) {
-//     if (p >= 0) {
-//       DisplaySetChar(x, y, c);
-//       y = y + 1;
-//       p = p + 2 * dy - 2 * dx;
-//     } else {
-//       DisplaySetChar(x, y, c);
-//       p = p + 2 * dy;
-//     }
-//     x = x + 1;
+// void DrawLine(s8 x0, s8 y0, s8 x1, s8 y1) {
+//   float dx = (float)(x1 - x0);
+//   float dy = (float)(y1 - y0);
+//   float steps = 0.0F;
+//   if (dx >= dy) {
+//     steps = dx;
+//   } else {
+//     steps = dy;
+//   }
+//   dx = dx / steps;
+//   dy = dy / steps;
+//   float x = x0;
+//   float y = y0;
+//   float i = 1;
+//   while (i <= steps) {
+//     DisplaySetChar((u8)x, (u8)y, '*');
+//     x += dx;
+//     y += dy;
+//     i = i + 1;
 //   }
 // }
 

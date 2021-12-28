@@ -17,6 +17,6 @@ void DisplayClear();
 
 void DrawSprite(struct Sprite *sprite);
 
-void DrawLine(u8 from_x, u8 from_y, u8 to_x, u8 to_y);
+void DrawLine(s8 from_x, s8 from_y, s8 to_x, s8 to_y);
 
 #endif

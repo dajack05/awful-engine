@@ -9,7 +9,12 @@
 #include <stdlib.h>
 
 #define SCREEN_HEIGHT 50
+
+#ifdef __MACOS__
 #define SCREEN_WIDTH (SCREEN_HEIGHT * 2)
+#else
+#define SCREEN_WIDTH SCREEN_HEIGHT
+#endif
 // #define SCREEN_HEIGHT 50
 // #define SCREEN_WIDTH 50
 

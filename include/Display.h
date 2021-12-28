@@ -1,13 +1,25 @@
 #ifndef H_DISPLAY
 #define H_DISPLAY
 
+/*
+
+   DisplayInit: Create and show terminal with proper size
+DisplayPresent: Update the terminal with the correct data
+DisplaySetChar: Set a char at a given coordinate
+ DisplaySetStr: Set a string starting at a given coordinate
+  DisplayClear: Clear the terminal (still requires DisplayPresent to be called)
+    DrawSprite: Draw a Sprite at a given location
+      DrawLine: Draw a line from x0,y0 to x1,y1
+
+*/
+
 #include <Global.h>
 #include <Sprite.h>
 
 #define MAX_WIDTH 50
 #define MAX_HEIGHT 50
 
-void DisplayInit(u8 width, u8 height, bool wide);
+void DisplayInit(bool wide);
 void DisplayPresent();
 
 void DisplaySetChar(u8 x, u8 y, char c);

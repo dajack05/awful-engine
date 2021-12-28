@@ -5,6 +5,7 @@
 #include <Display.h>
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 char mBG[MAX_WIDTH * MAX_HEIGHT];
@@ -20,10 +21,16 @@ void wipeScreen() {
   }
 }
 
-void DisplayInit(u8 width, u8 height, bool wide) {
+void DisplayInit(bool wide) {
   mWidth = width;
   mHeight = height;
   mWide = wide;
+
+  struct winsize w;
+  ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+
+  printf("lines %d\n", w.ws_row);
+  printf("columns %d\n", w.ws_col);
 
   for (u16 i = 0; i < mWidth * mHeight; i++) {
     mBG[i] = ' ';

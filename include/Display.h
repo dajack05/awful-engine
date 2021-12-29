@@ -3,7 +3,7 @@
 
 /*
 
-   DisplayInit: Create and show terminal with proper size
+   DisplayInit: Create and show terminal and return proper size
 DisplayPresent: Update the terminal with the correct data
 DisplaySetChar: Set a char at a given coordinate
  DisplaySetStr: Set a string starting at a given coordinate
@@ -19,7 +19,15 @@ DisplaySetChar: Set a char at a given coordinate
 #define MAX_WIDTH 50
 #define MAX_HEIGHT 50
 
-void DisplayInit(bool wide);
+struct WindowSize{
+  u16 width;
+  u16 height;
+};
+
+/**
+ * Sets up the terminal and returns the size of the terminal
+ */
+struct WindowSize DisplayInit(bool wide);
 void DisplayPresent();
 
 void DisplaySetChar(u8 x, u8 y, char c);

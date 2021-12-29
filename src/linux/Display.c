@@ -7,6 +7,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <termio.h>
+#include <termios.h>
+#include <unistd.h>
 
 char mBG[MAX_WIDTH * MAX_HEIGHT];
 char mScreen[MAX_WIDTH * MAX_HEIGHT];
@@ -21,22 +24,25 @@ void wipeScreen() {
   }
 }
 
-void DisplayInit(bool wide) {
-  mWidth = width;
-  mHeight = height;
+struct WindowSize DisplayInit(bool wide) {
   mWide = wide;
 
   struct winsize w;
   ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-
-  printf("lines %d\n", w.ws_row);
-  printf("columns %d\n", w.ws_col);
+  mWidth = w.ws_col;
+  mHeight = w.ws_row;
 
   for (u16 i = 0; i < mWidth * mHeight; i++) {
     mBG[i] = ' ';
   }
 
   wipeScreen();
+
+  struct WindowSize ws;
+  ws.width = mWidth;
+  ws.height = mHeight;
+
+  return ws;
 }
 
 void DisplayPresent() {

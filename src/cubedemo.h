@@ -8,16 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define SCREEN_HEIGHT 50
-
-#ifdef __MACOS__
-#define SCREEN_WIDTH (SCREEN_HEIGHT * 2)
-#else
-#define SCREEN_WIDTH SCREEN_HEIGHT
-#endif
-// #define SCREEN_HEIGHT 50
-// #define SCREEN_WIDTH 50
-
 #define DEG2RAD(a) (a * (M_PI / 180))
 
 #define BOX_SIZE 8
@@ -37,7 +27,7 @@ void sleepUntilFPS(u16 targetFPS, u64 startTime) {
 
 void Run() {
 
-  DisplayInit(SCREEN_WIDTH, SCREEN_HEIGHT, false);
+  struct WindowSize winsize = DisplayInit(false);
 
   DisplaySetChar(1, 1, ' ');
 
@@ -58,39 +48,39 @@ void Run() {
     offset.x = (float)sin(t) * 4;
 
     // Small
-    p[0].x = offset.x + (SCREEN_WIDTH / 2) + (float)sin(t) * BOX_SIZE * 2;
-    p[0].y = offset.y + (SCREEN_HEIGHT / 2) + (float)cos(t) * BOX_SIZE;
+    p[0].x = offset.x + (winsize.width / 2) + (float)sin(t) * BOX_SIZE * 2;
+    p[0].y = offset.y + (winsize.height / 2) + (float)cos(t) * BOX_SIZE;
 
-    p[1].x = offset.x + (SCREEN_WIDTH / 2) +
+    p[1].x = offset.x + (winsize.width / 2) +
              (float)sin(t + DEG2RAD(90)) * BOX_SIZE * 2;
     p[1].y =
-        offset.y + (SCREEN_HEIGHT / 2) + (float)cos(t + DEG2RAD(90)) * BOX_SIZE;
+        offset.y + (winsize.height / 2) + (float)cos(t + DEG2RAD(90)) * BOX_SIZE;
 
-    p[2].x = offset.x + (SCREEN_WIDTH / 2) +
+    p[2].x = offset.x + (winsize.width / 2) +
              (float)sin(t + DEG2RAD(180)) * BOX_SIZE * 2;
-    p[2].y = offset.y + (SCREEN_HEIGHT / 2) +
+    p[2].y = offset.y + (winsize.height / 2) +
              (float)cos(t + DEG2RAD(180)) * BOX_SIZE;
 
-    p[3].x = offset.x + (SCREEN_WIDTH / 2) +
+    p[3].x = offset.x + (winsize.width / 2) +
              (float)sin(t + DEG2RAD(270)) * BOX_SIZE * 2;
-    p[3].y = offset.y + (SCREEN_HEIGHT / 2) +
+    p[3].y = offset.y + (winsize.height / 2) +
              (float)cos(t + DEG2RAD(270)) * BOX_SIZE;
 
     // Large
-    p[4].x = (offset.x * 2) + (SCREEN_WIDTH / 2) + (float)sin(t) * BOX_SIZE * 4;
+    p[4].x = (offset.x * 2) + (winsize.width / 2) + (float)sin(t) * BOX_SIZE * 4;
     p[4].y =
-        (offset.y * 2) + (SCREEN_HEIGHT / 2) + (float)cos(t) * BOX_SIZE * 2;
-    p[5].x = (offset.x * 2) + (SCREEN_WIDTH / 2) +
+        (offset.y * 2) + (winsize.height / 2) + (float)cos(t) * BOX_SIZE * 2;
+    p[5].x = (offset.x * 2) + (winsize.width / 2) +
              (float)sin(t + DEG2RAD(90)) * BOX_SIZE * 4;
-    p[5].y = (offset.y * 2) + (SCREEN_HEIGHT / 2) +
+    p[5].y = (offset.y * 2) + (winsize.height / 2) +
              (float)cos(t + DEG2RAD(90)) * BOX_SIZE * 2;
-    p[6].x = (offset.x * 2) + (SCREEN_WIDTH / 2) +
+    p[6].x = (offset.x * 2) + (winsize.width / 2) +
              (float)sin(t + DEG2RAD(180)) * BOX_SIZE * 4;
-    p[6].y = (offset.y * 2) + (SCREEN_HEIGHT / 2) +
+    p[6].y = (offset.y * 2) + (winsize.height / 2) +
              (float)cos(t + DEG2RAD(180)) * BOX_SIZE * 2;
-    p[7].x = (offset.x * 2) + (SCREEN_WIDTH / 2) +
+    p[7].x = (offset.x * 2) + (winsize.width / 2) +
              (float)sin(t + DEG2RAD(270)) * BOX_SIZE * 4;
-    p[7].y = (offset.y * 2) + (SCREEN_HEIGHT / 2) +
+    p[7].y = (offset.y * 2) + (winsize.height / 2) +
              (float)cos(t + DEG2RAD(270)) * BOX_SIZE * 2;
 
     // Draw

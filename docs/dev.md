@@ -7,6 +7,3 @@
 - Model importing
 - Input handling
 - Dynamic resizing
-
-## General TODOs
-- Limit line draw to screen

@@ -1,7 +1,7 @@
 #ifndef H_SYSTEM
 #define H_SYSTEM
 
-#include <Global.h>
+#include <awful/Types.h>
 
 u64 SystemTime();
 

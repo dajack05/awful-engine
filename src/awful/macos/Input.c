@@ -1,8 +1,8 @@
-#include <Global.h>
+#include <awful/Global.h>
 
 #ifdef __MACOS__
 
-#include "Input.h"
+#include <awful/Input.h>
 
 int InputGetChar() { return 123; }
 

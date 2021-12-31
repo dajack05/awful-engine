@@ -54,4 +54,4 @@ dkms.conf
 # Project Specific
 build/
 .vscode/
-awful
+game

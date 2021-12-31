@@ -1,11 +1,11 @@
 #ifndef H_SPRITE
 #define H_SPRITE
 
+#include <awful/Vector.h>
+
 struct Sprite {
-  double x;
-  double y;
-  int w;
-  int h;
+  struct Vec2f pos;
+  struct Vec2i size;
   const char *data;
 };
 

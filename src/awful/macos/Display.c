@@ -1,8 +1,9 @@
-#include <Global.h>
+#include <awful/Global.h>
 
 #ifdef __MACOS__
 
-#include <Display.h>
+#include <awful/Display.h>
+#include <awful/Sprite.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -86,13 +87,13 @@ void DisplaySetStr(u16 x, u16 y, const char *str) {
 }
 
 void DrawSprite(struct Sprite *sprite) {
-  for (int y = 0; y < sprite->h; y++) {
-    for (int x = 0; x < sprite->w; x++) {
-      int idx = x + y * sprite->w;
+  for (int y = 0; y < sprite->size.y; y++) {
+    for (int x = 0; x < sprite->size.x; x++) {
+      int idx = x + y * sprite->size.x;
       // Skip if we're 'transparent'
       if (sprite->data[idx] != ' ') {
-        int finalx = (int)sprite->x + x;
-        int finaly = (int)sprite->y + y;
+        int finalx = (int)sprite->pos.x + x;
+        int finaly = (int)sprite->pos.y + y;
 
         // Don't draw out of bounds
         if (finalx < mWidth && finaly < mHeight && finalx >= 0 && finaly >= 0) {

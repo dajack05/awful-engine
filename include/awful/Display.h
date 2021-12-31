@@ -13,11 +13,12 @@ DisplaySetChar: Set a char at a given coordinate
 
 */
 
-#include <Global.h>
-#include <Sprite.h>
+#include <awful/Types.h>
 
 #define MAX_WIDTH 50
 #define MAX_HEIGHT 50
+
+struct Sprite;
 
 struct WindowSize {
   u16 width;

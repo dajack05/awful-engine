@@ -1,15 +1,12 @@
-#include <Global.h>
-
+#include "velocitydemo.h"
 #include "assets.h"
 
-#include <Display.h>
-#include <System.h>
-#include <Vector.h>
+#include <awful/Display.h>
+#include <awful/Sprite.h>
+#include <awful/System.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#define DEG2RAD(a) (a * (M_PI / 180))
 
 void sleepUntilFPS(u16 targetFPS, u64 startTime) {
   u64 now = SystemTime();
@@ -21,24 +18,24 @@ void sleepUntilFPS(u16 targetFPS, u64 startTime) {
 
 void Run() {
 
-  struct WindowSize winsize = DisplayInit(false);
+  struct WindowSize winSize = DisplayInit(false);
 
-  struct Vector vec1 = vec_new(10, 10);
-  struct Vector vec2 = vec_new(1, 2);
+  struct Sprite player;
+  player.pos = vec2f_new(((float)winSize.width / 2) - 10,
+                         ((float)winSize.height / 2) - 7);
+  player.size = vec2i_new(20, 13);
+  player.data = SPHERE;
+
+  const struct Vec2f grav = vec2f_new(0, 1);
 
   bool should_run = true;
   while (should_run) {
     u64 startTime = SystemTime();
     double t = (double)startTime / 1000.0F;
 
-    // vec1 = vec_addv(vec1, vec2);
-    vec1 = vec_addv(vec1, vec2);
-
     DisplayClear();
 
-    char str[128];
-    sprintf(str, "%f, %f", vec1.x, vec1.y);
-    DisplaySetStr(10, 10, str);
+    DrawSprite(&player);
 
     DisplayPresent();
     sleepUntilFPS(10, startTime);

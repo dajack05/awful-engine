@@ -1,7 +1,4 @@
-#include <Global.h>
-
-// #include "cubedemo.h"
-#include "vecdemo.h"
+#include <velocitydemo.h>
 
 int main(int argc, char **argv) {
 

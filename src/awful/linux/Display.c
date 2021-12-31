@@ -1,4 +1,4 @@
-#include <Global.h>
+#include <awful/Global.h>
 
 #ifdef __LINUX__
 

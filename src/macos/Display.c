@@ -5,7 +5,11 @@
 #include <Display.h>
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <sys/ioctl.h>
+#include <termios.h>
+#include <unistd.h>
 
 char mBG[MAX_WIDTH * MAX_HEIGHT];
 char mScreen[MAX_WIDTH * MAX_HEIGHT];
@@ -20,16 +24,25 @@ void wipeScreen() {
   }
 }
 
-void DisplayInit(u8 width, u8 height, bool wide) {
-  mWidth = width;
-  mHeight = height;
+struct WindowSize DisplayInit(bool wide) {
   mWide = wide;
+
+  struct winsize w;
+  ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+  mWidth = w.ws_col;
+  mHeight = w.ws_row;
 
   for (u16 i = 0; i < mWidth * mHeight; i++) {
     mBG[i] = ' ';
   }
 
   wipeScreen();
+
+  struct WindowSize ws;
+  ws.width = mWidth;
+  ws.height = mHeight;
+
+  return ws;
 }
 
 void DisplayPresent() {
@@ -117,27 +130,5 @@ void DrawLine(s8 x0, s8 y0, s8 x1, s8 y1) {
     i++;
   }
 }
-
-// void DrawLine(s8 x0, s8 y0, s8 x1, s8 y1) {
-//   float dx = (float)(x1 - x0);
-//   float dy = (float)(y1 - y0);
-//   float steps = 0.0F;
-//   if (dx >= dy) {
-//     steps = dx;
-//   } else {
-//     steps = dy;
-//   }
-//   dx = dx / steps;
-//   dy = dy / steps;
-//   float x = x0;
-//   float y = y0;
-//   float i = 1;
-//   while (i <= steps) {
-//     DisplaySetChar((u8)x, (u8)y, '*');
-//     x += dx;
-//     y += dy;
-//     i = i + 1;
-//   }
-// }
 
 #endif

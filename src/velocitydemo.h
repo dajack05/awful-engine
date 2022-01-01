@@ -1,24 +1,19 @@
 #include "assets.h"
 
 #include <awful/Display.h>
+#include <awful/Input.h>
 #include <awful/Sprite.h>
 #include <awful/System.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-void sleepUntilFPS(u16 targetFPS) {
-  char cmd[32];
-  sprintf(cmd, "sleep %f", 1.0F / targetFPS);
-  system(cmd);
-}
-
 void Run() {
 
   struct WindowSize winSize = DisplayInit(false);
 
   struct Sprite player;
-  struct Vec2f velocity = vec2f_new(0.0F, 0.0F);
+  struct Vec2f velocity = vec2f_new(2.0F, 0.0F);
   player.pos = vec2f_new(((float)winSize.width / 2) - 10, 0);
   player.size = vec2i_new(20, 13);
   player.data = SPHERE;
@@ -26,9 +21,10 @@ void Run() {
   bool should_run = true;
   while (should_run) {
 
-    if (player.pos.y > (float)(winSize.height - player.size.y) ||
-        player.pos.y < 0) {
-      velocity.y = -velocity.y;
+    velocity = vec2f_addf(velocity, 0, 0.1F);
+
+    if (player.pos.y > (float)(winSize.height - player.size.y)) {
+      velocity.y = -velocity.y * 0.9F;
     }
     if (player.pos.x > (float)(winSize.width - player.size.x) ||
         player.pos.x < 0) {
@@ -41,8 +37,16 @@ void Run() {
 
     DrawSprite(&player);
 
-    DisplayPresent();
+    // Draw velocity vector
+    struct Vec2f center = vec2f_addf(player.pos, (float)player.size.x / 2,
+                                     (float)player.size.y / 2);
+    struct Vec2f dir = vec2f_mulf(velocity, 10, 10);
+    DrawLine(center, vec2f_addv(center, dir));
 
-    sleepUntilFPS(20);
+    char inputStr[20];
+    sprintf(inputStr, "%d", InputGetChar());
+    DisplaySetStr(10, 10, inputStr);
+
+    DisplayPresent();
   }
 }

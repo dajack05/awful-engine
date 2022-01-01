@@ -109,10 +109,10 @@ void DisplayClear() {
   }
 }
 
-void DrawLine(s16 x0, s16 y0, s16 x1, s16 y1) {
+void DrawLine(struct Vec2f from, struct Vec2f to) {
   const char c = '*';
-  double dx = x1 - x0;
-  double dy = y1 - y0;
+  double dx = to.x - from.x;
+  double dy = to.y - from.y;
 
   double length = fabs(dy);
   if (fabs(dx) >= length) {
@@ -122,8 +122,8 @@ void DrawLine(s16 x0, s16 y0, s16 x1, s16 y1) {
   dx = dx / length;
   dy = dy / length;
 
-  double x = x0;
-  double y = y0;
+  double x = from.x;
+  double y = from.y;
 
   DisplaySetChar((u16)x, (u16)y, c);
   int i = 1;

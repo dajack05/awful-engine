@@ -7,3 +7,6 @@
 - Model importing
 - Input handling
 - Dynamic resizing
+
+## General TODOs
+- Migrate to a better sleep system

@@ -31,7 +31,7 @@ struct WindowSize DisplayInit(bool wide) {
   struct winsize w;
   ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
   mWidth = w.ws_col;
-  mHeight = w.ws_row;
+  mHeight = w.ws_row + 8;
 
   for (u16 i = 0; i < mWidth * mHeight; i++) {
     mBG[i] = ' ';
@@ -61,20 +61,25 @@ void DisplayPresent() {
       printf("%c", mScreen[i]);
 
       // Are we at the end of the line?
-      if (i % mWidth == mWidth - 1) {
-        // Make sure we're NOT at the last line
-        if (i < mWidth * mHeight - mWidth) {
-          printf("\n");
+      if (mWidth > 0) {
+        if (i % mWidth == mWidth - 1) {
+          // Make sure we're NOT at the last line
+          if (i < mWidth * mHeight - mWidth) {
+            printf("\n");
+          }
         }
       }
     }
   }
 
   wipeScreen();
+
+  // This can be better...
+  usleep(1000000 / TARGET_FPS);
 }
 
 void DisplaySetChar(u16 x, u16 y, char c) {
-  if (x > 0 && x <= mWidth && y > 0 && y <= mHeight) {
+  if (x >= 0 && x < mWidth && y >= 0 && y < mHeight) {
     mScreen[x + y * mWidth] = c;
   }
 }
@@ -104,16 +109,12 @@ void DrawSprite(struct Sprite *sprite) {
   }
 }
 
-void DisplayClear() {
-  for (int i = 0; i < mHeight; i++) {
-    printf("\n");
-  }
-}
+void DisplayClear() { system("clear"); }
 
-void DrawLine(s16 x0, s16 y0, s16 x1, s16 y1) {
+void DrawLine(struct Vec2f from, struct Vec2f to) {
   const char c = '*';
-  double dx = x1 - x0;
-  double dy = y1 - y0;
+  double dx = to.x - from.x;
+  double dy = to.y - from.y;
 
   double length = fabs(dy);
   if (fabs(dx) >= length) {
@@ -123,8 +124,8 @@ void DrawLine(s16 x0, s16 y0, s16 x1, s16 y1) {
   dx = dx / length;
   dy = dy / length;
 
-  double x = x0;
-  double y = y0;
+  double x = from.x;
+  double y = from.y;
 
   DisplaySetChar((u16)x, (u16)y, c);
   int i = 1;

@@ -3,7 +3,11 @@
 #ifdef __MACOS__
 
 #include <awful/Input.h>
+#include <stdio.h>
 
-int InputGetChar() { return 123; }
+int InputGetChar() {
+  int c = getchar();
+  return c;
+}
 
 #endif

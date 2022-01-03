@@ -1,3 +1,6 @@
+const char *const PLAYER = "  XX  "
+                           "XX  XX"
+                           "  XX  ";
 const char *const PLANE_LEFT = "   ____       _ "
                                " |__\\_\\_o,___/ \\"
                                "([___\\_\\_____-\\'"

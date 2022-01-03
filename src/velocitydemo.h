@@ -14,23 +14,32 @@ void Run() {
 
   struct Sprite player;
   struct Vec2f velocity = vec2f_new(0.0F, 0.0F);
-  player.pos = vec2f_new(((float)winSize.width / 2) - 10,
-                         ((float)winSize.height / 2) - 7);
-  player.size = vec2i_new(20, 13);
-  player.data = SPHERE;
+  player.pos = vec2f_new(((float)winSize.width / 2) - 3,
+                         ((float)winSize.height / 2) - 2);
+  player.size = vec2i_new(6, 3);
+  player.data = PLAYER;
 
   bool should_run = true;
   while (should_run) {
-
-    char down_key = InputGetChar();
+    pollInput();
 
     // velocity = vec2f_addf(velocity, 0, 0.1F);
-    if (down_key == 'd') {
+    if (isKeyDown('d')) {
       velocity = vec2f_addf(velocity, 0.1F, 0.0F);
     }
+    if (isKeyDown('a')) {
+      velocity = vec2f_addf(velocity, -0.1F, 0.0F);
+    }
 
-    if (player.pos.y > (float)(winSize.height - player.size.y)) {
-      velocity.y = -velocity.y * 0.9F;
+    if (isKeyDown('w')) {
+      velocity = vec2f_addf(velocity, 0.0F, -0.1F);
+    }
+    if (isKeyDown('s')) {
+      velocity = vec2f_addf(velocity, 0.0F, 0.1F);
+    }
+
+    if (player.pos.y > (float)(winSize.height - player.size.y) || player.pos.y < 0) {
+      velocity.y = -velocity.y;
     }
     if (player.pos.x > (float)(winSize.width - player.size.x) ||
         player.pos.x < 0) {
@@ -51,7 +60,7 @@ void Run() {
 
     DisplayPresent();
 
-    if (down_key == 'q') {
+    if (isKeyDown('q')) {
       should_run = false;
     }
   }

@@ -31,6 +31,7 @@ struct WindowSize {
  * Sets up the terminal and returns the size of the terminal
  */
 struct WindowSize DisplayInit(bool wide);
+
 void DisplayPresent();
 
 void DisplaySetChar(u16 x, u16 y, char c);

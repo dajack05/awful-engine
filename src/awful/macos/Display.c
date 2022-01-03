@@ -52,7 +52,7 @@ void DisplayPresent() {
     for (u16 i = 0; i < mWidth * mHeight; i++) {
       printf("%c%c", mScreen[i], mScreen[i]);
       if (i % mWidth == mWidth - 1) {
-        printf("\n");
+        printf("\r\n");
       }
     }
   } else {
@@ -65,7 +65,7 @@ void DisplayPresent() {
         if (i % mWidth == mWidth - 1) {
           // Make sure we're NOT at the last line
           if (i < mWidth * mHeight - mWidth) {
-            printf("\n");
+            printf("\r\n");
           }
         }
       }

@@ -1,4 +1,4 @@
-#include "velocitydemo.h"
+#include "polygons.h"
 
 int main(int argc, char **argv) {
 

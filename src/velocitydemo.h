@@ -32,10 +32,10 @@ void Run() {
     }
 
     if (isKeyDown('w')) {
-      velocity = vec2f_addf(velocity, 0.0F, -0.1F);
+      velocity = vec2f_addf(velocity, 0.0F, -0.05F);
     }
     if (isKeyDown('s')) {
-      velocity = vec2f_addf(velocity, 0.0F, 0.1F);
+      velocity = vec2f_addf(velocity, 0.0F, 0.05F);
     }
 
     if (player.pos.y > (float)(winSize.height - player.size.y) || player.pos.y < 0) {

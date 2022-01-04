@@ -42,5 +42,6 @@ void DisplayClear();
 void DrawSprite(struct Sprite *sprite);
 
 void DrawLine(struct Vec2f from, struct Vec2f to);
+void DrawLine3D(struct Vec3f from, struct Vec3f to);
 
 #endif

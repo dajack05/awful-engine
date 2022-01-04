@@ -28,18 +28,12 @@ void Run() {
     pollInput();
 
     if (isKeyDown('d')) {
-      tri1.p1.x += 0.4;
-      tri1.p2.x += 0.2;
-      tri1.p3.x += 0.4;
-      tri2.p1.x += 0.2;
-      tri2.p2.x += 0.4;
-      tri2.p3.x += 0.2;
     }
 
     DisplayClear();
 
     DrawTri(tri1);
-    DrawTri(tri2);
+    // DrawTri(tri2);
 
     DisplayPresent();
 

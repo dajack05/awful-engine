@@ -17,7 +17,48 @@ float max(float a, float b) {
   return b;
 }
 
-void fillBottomFlatTriangle(struct Vec3f v1, struct Vec3f v2, struct Vec3f v3) {
+void fillBottomFlatTriangle3D(struct Vec3f v1, struct Vec3f v2,
+                              struct Vec3f v3) {
+  float invslope1 = (v2.x - v1.x) / (v2.y - v1.y);
+  float invslope2 = (v3.x - v1.x) / (v3.y - v1.y);
+
+  float curx1 = v1.x;
+  float curx2 = v1.x;
+
+  float curz1 = v1.z;
+  float curz2 = v1.z;
+
+  for (int scanlineY = v1.y; scanlineY <= v2.y; scanlineY++) {
+    // Ok... We gotta figure out how to lerp the Z value
+    float lineStartZ = 0.0F;
+    float lineEndZ = 1.0F;
+    DrawLine3D(vec3f_new(curx1, scanlineY, lineStartZ),
+               vec3f_new(curx2, scanlineY, lineEndZ));
+    curx1 += invslope1;
+    curx2 += invslope2;
+  }
+}
+
+void fillTopFlatTriangle3D(struct Vec3f v1, struct Vec3f v2, struct Vec3f v3) {
+  float invslope1 = (v3.x - v1.x) / (v3.y - v1.y);
+  float invslope2 = (v3.x - v2.x) / (v3.y - v2.y);
+
+  float curx1 = v3.x;
+  float curx2 = v3.x;
+
+  for (int scanlineY = v3.y; scanlineY > v1.y; scanlineY--) {
+    // Ok... We gotta figure out how to lerp the Z value
+    float lineStartZ = 0.0F;
+    float lineEndZ = 1.0F;
+    DrawLine3D(vec3f_new(curx1, scanlineY, lineStartZ),
+               vec3f_new(curx2, scanlineY, lineEndZ));
+    curx1 -= invslope1;
+    curx2 -= invslope2;
+  }
+}
+
+void fillBottomFlatTriangle2D(struct Vec3f v1, struct Vec3f v2,
+                              struct Vec3f v3) {
   float invslope1 = (v2.x - v1.x) / (v2.y - v1.y);
   float invslope2 = (v3.x - v1.x) / (v3.y - v1.y);
 
@@ -26,13 +67,12 @@ void fillBottomFlatTriangle(struct Vec3f v1, struct Vec3f v2, struct Vec3f v3) {
 
   for (int scanlineY = v1.y; scanlineY <= v2.y; scanlineY++) {
     DrawLine(vec2f_new(curx1, scanlineY), vec2f_new(curx2, scanlineY));
-    // drawLine((int)curx1, scanlineY, (int)curx2, scanlineY);
     curx1 += invslope1;
     curx2 += invslope2;
   }
 }
 
-void fillTopFlatTriangle(struct Vec3f v1, struct Vec3f v2, struct Vec3f v3) {
+void fillTopFlatTriangle2D(struct Vec3f v1, struct Vec3f v2, struct Vec3f v3) {
   float invslope1 = (v3.x - v1.x) / (v3.y - v1.y);
   float invslope2 = (v3.x - v2.x) / (v3.y - v2.y);
 
@@ -41,7 +81,6 @@ void fillTopFlatTriangle(struct Vec3f v1, struct Vec3f v2, struct Vec3f v3) {
 
   for (int scanlineY = v3.y; scanlineY > v1.y; scanlineY--) {
     DrawLine(vec2f_new(curx1, scanlineY), vec2f_new(curx2, scanlineY));
-    // drawLine((int)curx1, scanlineY, (int)curx2, scanlineY);
     curx1 -= invslope1;
     curx2 -= invslope2;
   }
@@ -81,25 +120,14 @@ struct Triangle sortVerticesAscendingByY(struct Triangle tri) {
 }
 
 void DrawTri(struct Triangle tri) {
-  // To test, let's fill a rect instead
-  float minx = min(min(tri.p1.x, tri.p2.x), tri.p3.x);
-  float maxx = max(max(tri.p1.x, tri.p2.x), tri.p3.x);
-
-  float miny = min(min(tri.p1.y, tri.p2.y), tri.p3.y);
-  float maxy = max(max(tri.p1.y, tri.p2.y), tri.p3.y);
-
-  /* at first sort the three vertices by y-coordinate ascending so v1 is the
-   * topmost vertice */
   struct Triangle mTri = sortVerticesAscendingByY(tri);
 
-  /* here we know that v1.y <= v2.y <= v3.y */
-  /* check for trivial case of bottom-flat triangle */
   if (mTri.p2.y == mTri.p3.y) {
-    fillBottomFlatTriangle(mTri.p1, mTri.p2, mTri.p3);
+    fillBottomFlatTriangle3D(mTri.p1, mTri.p2, mTri.p3);
   }
   /* check for trivial case of top-flat triangle */
   else if (mTri.p1.y == mTri.p2.y) {
-    fillTopFlatTriangle(mTri.p1, mTri.p2, mTri.p3);
+    fillTopFlatTriangle3D(mTri.p1, mTri.p2, mTri.p3);
   } else {
     /* general case - split the triangle in a topflat and bottom-flat one */
     struct Vec2f v4 =
@@ -107,7 +135,7 @@ void DrawTri(struct Triangle tri) {
                                      (float)(mTri.p3.y - mTri.p1.y)) *
                                         (mTri.p3.x - mTri.p1.x)),
                   mTri.p2.y);
-    fillBottomFlatTriangle(mTri.p1, mTri.p2, mTri.p3);
-    fillTopFlatTriangle(mTri.p2, mTri.p3, mTri.p1);
+    fillBottomFlatTriangle3D(mTri.p1, mTri.p2, mTri.p3);
+    fillTopFlatTriangle3D(mTri.p2, mTri.p3, mTri.p1);
   }
 }

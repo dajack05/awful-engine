@@ -48,8 +48,8 @@ void fillTopFlatTriangle3D(struct Vec3f v1, struct Vec3f v2, struct Vec3f v3) {
 
   for (int scanlineY = v3.y; scanlineY > v1.y; scanlineY--) {
     // Ok... We gotta figure out how to lerp the Z value
-    float lineStartZ = 0.0F;
-    float lineEndZ = 1.0F;
+    float lineStartZ = max(v1.z, 0.0F);
+    float lineEndZ = max(v3.z, 0.0F);
     DrawLine3D(vec3f_new(curx1, scanlineY, lineStartZ),
                vec3f_new(curx2, scanlineY, lineEndZ));
     curx1 -= invslope1;

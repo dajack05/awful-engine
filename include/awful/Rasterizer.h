@@ -19,6 +19,6 @@ struct Triangle {
   struct Vec3f p3;
 };
 
-void DrawTri(struct Triangle *tri);
+void DrawTri(struct Triangle tri);
 
 #endif

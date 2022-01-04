@@ -13,25 +13,33 @@ void Run() {
 
   struct WindowSize winSize = DisplayInit(false);
 
-  struct Sprite player;
-  struct Vec2f velocity = vec2f_new(0.0F, 0.0F);
-  player.pos = vec2f_new(((float)winSize.width / 2) - 3,
-                         ((float)winSize.height / 2) - 2);
-  player.size = vec2i_new(6, 3);
-  player.data = PLAYER;
+  struct Triangle tri1;
+  tri1.p1 = vec3f_new(10, 10, 0);
+  tri1.p2 = vec3f_new(20, 10, 0);
+  tri1.p3 = vec3f_new(20, 20, 0);
 
-  struct Triangle tri;
-  tri.p1 = vec3f_new(0, -10, 0); // Top
-  tri.p2 = vec3f_new(-5, 5, 0);  // Left
-  tri.p3 = vec3f_new(5, 5, 0);   // Right
+  struct Triangle tri2;
+  tri2.p1 = vec3f_new(10, 10, 0);
+  tri2.p2 = vec3f_new(20, 20, 0);
+  tri2.p3 = vec3f_new(10, 20, 0);
 
   bool should_run = true;
   while (should_run) {
     pollInput();
 
+    if (isKeyDown('d')) {
+      tri1.p1.x += 0.4;
+      tri1.p2.x += 0.2;
+      tri1.p3.x += 0.4;
+      tri2.p1.x += 0.2;
+      tri2.p2.x += 0.4;
+      tri2.p3.x += 0.2;
+    }
+
     DisplayClear();
 
-    DrawSprite(&player);
+    DrawTri(tri1);
+    DrawTri(tri2);
 
     DisplayPresent();
 

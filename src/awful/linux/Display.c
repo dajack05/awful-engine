@@ -130,43 +130,6 @@ void DisplayClear() {
   }
 }
 
-// Dark -> light
-const char gradients[] = {'#', '*', '+', '=', '-', ':', '.'};
-// const char gradients[] = {'.', ':', '-', '=', '+', '*', '#'};
-void DrawLine3D(struct Vec3f from, struct Vec3f to) {
-  double dx = to.x - from.x;
-  double dy = to.y - from.y;
-  double dz = to.z - from.z;
-
-  double length = fabs(dy);
-  if (fabs(dx) >= length) {
-    length = fabs(dx);
-  }
-
-  dx = dx / length;
-  dy = dy / length;
-  dz = dz / 7;
-
-  double x = from.x;
-  double y = from.y;
-  double z = from.z;
-  if (z < 0.0) {
-    z = 0.0;
-  }
-
-  int zidx = (int)z;
-  DisplaySetChar((u16)x, (u16)y, gradients[zidx]);
-  int i = 1;
-  while (i <= length) {
-    x += dx;
-    y += dy;
-    z += dz;
-    zidx = (int)z;
-    DisplaySetChar((u16)x, (u16)y, gradients[zidx]);
-    i++;
-  }
-}
-
 void DrawLine(struct Vec2f from, struct Vec2f to) {
   char c = '*';
   double dx = to.x - from.x;

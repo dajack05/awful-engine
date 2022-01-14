@@ -1,6 +1,8 @@
 #ifndef H_VECTOR
 #define H_VECTOR
 
+#include <awful/Matrix.h>
+
 struct Vec2i {
   int x;
   int y;
@@ -50,5 +52,7 @@ BASIC_OP_DEF(add);
 BASIC_OP_DEF(sub);
 BASIC_OP_DEF(mul);
 BASIC_OP_DEF(div);
+
+struct Vec3f vec3f_mulm(struct Vec3f vec, struct Matrix mat);
 
 #endif

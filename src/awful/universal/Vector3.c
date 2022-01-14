@@ -69,3 +69,19 @@ BASIC_OP(add, +);
 BASIC_OP(sub, -);
 BASIC_OP(mul, *);
 BASIC_OP(div, /);
+
+struct Vec3f vec3f_mulm(struct Vec3f vec, struct Matrix mat) {
+  float vecData[3];
+  vecData[0] = vec.x;
+  vecData[1] = vec.y;
+  vecData[2] = vec.z;
+
+  struct Matrix a;
+  for (int k = 0; k < MAT_LEN; k++) {
+    int vecIdx = k % 3;
+    a.data[k] = mat.data[k] * vecData[vecIdx];
+  }
+
+  float b[4];
+  b[0] = a.data[0]+a.data[1]+a.data[2]
+}

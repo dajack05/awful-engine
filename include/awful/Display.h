@@ -14,7 +14,7 @@ DisplaySetChar: Set a char at a given coordinate
 */
 
 #include <awful/Types.h>
-#include <awful/Vector.h>
+#include <awful/cgm.h>
 
 #define MAX_WIDTH 200
 #define MAX_HEIGHT 200
@@ -41,6 +41,6 @@ void DisplayClear();
 
 void DrawSprite(struct Sprite *sprite);
 
-void DrawLine(struct Vec2f from, struct Vec2f to);
+void DrawLine(CgmVec2 from, CgmVec2 to);
 
 #endif

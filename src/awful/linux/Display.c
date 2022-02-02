@@ -130,7 +130,7 @@ void DisplayClear() {
   }
 }
 
-void DrawLine(struct Vec2f from, struct Vec2f to) {
+void DrawLine(CgmVec2 from, CgmVec2 to) {
   char c = '*';
   double dx = to.x - from.x;
   double dy = to.y - from.y;

@@ -106,6 +106,18 @@ void DisplaySetStr(u16 x, u16 y, const char *str) {
   }
 }
 
+void DisplaySetInt(u16 x, u16 y, const int value) {
+  char str[16];
+  sprintf(str, "%d", value);
+  DisplaySetStr(x, y, str);
+}
+
+void DisplaySetFloat(u16 x, u16 y, const float value) {
+  char str[16];
+  sprintf(str, "%f", value);
+  DisplaySetStr(x, y, str);
+}
+
 void DrawSprite(struct Sprite *sprite) {
   for (int y = 0; y < sprite->size.y; y++) {
     for (int x = 0; x < sprite->size.x; x++) {

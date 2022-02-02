@@ -36,6 +36,8 @@ void DisplayPresent();
 
 void DisplaySetChar(u16 x, u16 y, char c);
 void DisplaySetStr(u16 x, u16 y, const char *str);
+void DisplaySetInt(u16 x, u16 y, const int value);
+void DisplaySetFloat(u16 x, u16 y, const float value);
 
 void DisplayClear();
 

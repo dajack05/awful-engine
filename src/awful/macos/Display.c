@@ -19,6 +19,22 @@ u16 mHeight = 0;
 
 bool mWide = false;
 
+struct termios orig_termios;
+
+void disableRawMode() { tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios); }
+
+void enableRawMode() {
+  tcgetattr(STDIN_FILENO, &orig_termios);
+  atexit(disableRawMode);
+  struct termios raw = orig_termios;
+  raw.c_iflag &= ~(ICRNL | IXON);
+  raw.c_oflag &= ~(OPOST);
+  raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
+  raw.c_cc[VMIN] = 0;
+  raw.c_cc[VTIME] = 0;
+  tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
+}
+
 void wipeScreen() {
   for (u16 i = 0; i < mWidth * mHeight; i++) {
     mScreen[i] = mBG[i];
@@ -26,6 +42,7 @@ void wipeScreen() {
 }
 
 struct WindowSize DisplayInit(bool wide) {
+  enableRawMode();
   mWide = wide;
 
   struct winsize w;
@@ -92,9 +109,9 @@ void DisplaySetStr(u16 x, u16 y, const char *str) {
 }
 
 void DrawSprite(struct Sprite *sprite) {
-  for (int y = 0; y < sprite->size.y; y++) {
-    for (int x = 0; x < sprite->size.x; x++) {
-      int idx = x + y * sprite->size.x;
+  for (int y = 0; y < (int)sprite->size.y; y++) {
+    for (int x = 0; x < (int)sprite->size.x; x++) {
+      int idx = x + y * (int)sprite->size.x;
       // Skip if we're 'transparent'
       if (sprite->data[idx] != ' ') {
         int finalx = (int)sprite->pos.x + x;

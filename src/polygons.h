@@ -87,8 +87,31 @@ void Run() {
 
     DisplayPresent();
 
-    if (isKeyDown('q')) {
+    if (isKeyDown('t')) {
       should_run = false;
     }
+
+    CgmVec3 moveVec = CgmVec3_init(0, 0, 0);
+
+    if (isKeyDown('w')) {
+      moveVec.z = -1;
+    }
+    if (isKeyDown('s')) {
+      moveVec.z = 1;
+    }
+    if (isKeyDown('a')) {
+      moveVec.x = -1;
+    }
+    if (isKeyDown('d')) {
+      moveVec.x = 1;
+    }
+    if (isKeyDown('q')) {
+      moveVec.y = -1;
+    }
+    if (isKeyDown('e')) {
+      moveVec.y = 1;
+    }
+
+    CgmMat4x4_translate(&view, moveVec);
   }
 }

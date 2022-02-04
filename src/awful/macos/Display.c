@@ -111,7 +111,7 @@ void DrawSprite(struct Sprite *sprite) {
 
 void DisplayClear() { system("clear"); }
 
-void DrawLine(struct Vec2f from, struct Vec2f to) {
+void DrawLine(CgmVec2 from, CgmVec2 to) {
   const char c = '*';
   double dx = to.x - from.x;
   double dy = to.y - from.y;

@@ -8,7 +8,7 @@
 bool downKeys[128];
 
 void pollInput() {
-  
+
   for (int i = 0; i < 128; i++) {
     downKeys[i] = false;
   }

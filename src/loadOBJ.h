@@ -15,7 +15,7 @@ void Run() {
   struct WindowSize winSize = DisplayInit(false);
 
   // Front Face
-  struct Mesh mesh = LoadOBJ("./dev/cube.obj");
+  struct Mesh mesh = LoadOBJ("./dev/monkey.obj");
 
   CgmMat4x4_scale(&mesh.matrix, CgmVec3_init(4, 4, 4));
 

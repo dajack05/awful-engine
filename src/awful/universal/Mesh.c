@@ -5,6 +5,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+bool str_contains(char *haystack, const char needle) {
+  for (int i = 0; i < strlen(haystack); i++) {
+    if (haystack[i] == needle) {
+      return true;
+    }
+  }
+  return false;
+}
+
 char **str_split(char *a_str, const char a_delim) {
   char **result = 0;
   size_t count = 0;
@@ -55,13 +64,11 @@ struct Mesh LoadOBJ(const char *path) {
   f = fopen(path, "r");
 
   u16 vertexIdx = 0;
-  u16 indexIdx = 0;
 
   struct Mesh m = GenMesh();
 
   while (fgets(buffer, 70, f) != NULL) {
-    // puts(buffer);
-    // printf("Boop\n");
+
     if (buffer[0] == 'v' && buffer[1] == ' ') {
       // Vertex
 
@@ -78,6 +85,18 @@ struct Mesh LoadOBJ(const char *path) {
 
       char **parts = str_split(buffer, ' ');
       int count = sizeof(parts) / sizeof(parts[0]);
+
+      for (int i = 0; i < 3; i++) {
+        char *group = parts[i + 1];
+        if (str_contains(group, '/')) {
+          // Split and take the first one
+          char **splits = str_split(group, '/');
+          m.indexes[m.count++] = atoi(splits[0]) - 1;
+        } else {
+          // Take it as-is
+          m.indexes[m.count++] = atoi(group) - 1;
+        }
+      }
     }
   }
   fclose(f);

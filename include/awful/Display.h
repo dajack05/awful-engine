@@ -44,5 +44,6 @@ void DisplayClear();
 void DrawSprite(struct Sprite *sprite);
 
 void DrawLine(CgmVec2 from, CgmVec2 to);
+void DrawGradientLine(CgmVec2 from, CgmVec2 to, float fromDepth, float toDepth);
 
 #endif

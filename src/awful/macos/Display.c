@@ -128,30 +128,4 @@ void DrawSprite(struct Sprite *sprite) {
 
 void DisplayClear() { system("clear"); }
 
-void DrawLine(CgmVec2 from, CgmVec2 to) {
-  const char c = '*';
-  double dx = to.x - from.x;
-  double dy = to.y - from.y;
-
-  double length = fabs(dy);
-  if (fabs(dx) >= length) {
-    length = fabs(dx);
-  }
-
-  dx = dx / length;
-  dy = dy / length;
-
-  double x = from.x;
-  double y = from.y;
-
-  DisplaySetChar((u16)x, (u16)y, c);
-  int i = 1;
-  while (i <= length) {
-    x += dx;
-    y += dy;
-    DisplaySetChar((u16)x, (u16)y, c);
-    i++;
-  }
-}
-
 #endif

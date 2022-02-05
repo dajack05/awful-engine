@@ -57,7 +57,7 @@ char **str_split(char *a_str, const char a_delim) {
   return result;
 }
 
-struct Mesh LoadOBJ(const char *path) {
+Mesh LoadOBJ(const char *path) {
 
   FILE *f;
   char buffer[128];
@@ -65,8 +65,12 @@ struct Mesh LoadOBJ(const char *path) {
 
   u16 vertexIdx = 0;
 
-  struct Mesh m = GenMesh();
+  Mesh m = GenMesh();
 
+  if (!f) {
+    printf("Failed to load %s. Exiting...\n", path);
+    exit(EXIT_FAILURE);
+  }
   while (fgets(buffer, 70, f) != NULL) {
 
     if (buffer[0] == 'v' && buffer[1] == ' ') {
@@ -104,8 +108,8 @@ struct Mesh LoadOBJ(const char *path) {
   return m;
 }
 
-struct Mesh GenMesh() {
-  struct Mesh m;
+Mesh GenMesh() {
+  Mesh m;
 
   CgmMat4x4_identity(&m.matrix);
   m.count = 0;
@@ -117,7 +121,7 @@ struct Mesh GenMesh() {
   return m;
 }
 
-void MeshUpdate(struct Mesh *mesh) {
+void MeshUpdate(Mesh *mesh) {
   CgmMat4x4_identity(&mesh->matrix);
 
   CgmMat4x4_rotate(&mesh->matrix, CgmVec3_init(1, 0, 0), mesh->rotation.x);
@@ -129,10 +133,10 @@ void MeshUpdate(struct Mesh *mesh) {
   CgmMat4x4_translate(&mesh->matrix, mesh->position);
 }
 
-void MeshRotate(struct Mesh *mesh, const CgmVec3 rotation) {
+void MeshRotate(Mesh *mesh, const CgmVec3 rotation) {
   mesh->rotation = CgmVec3_add(mesh->rotation, rotation);
 }
 
-void MeshSetRotation(struct Mesh *mesh, const CgmVec3 rotation) {
+void MeshSetRotation(Mesh *mesh, const CgmVec3 rotation) {
   mesh->rotation = rotation;
 }

@@ -15,7 +15,7 @@ void Run() {
   struct WindowSize winSize = DisplayInit(false);
 
   // Front Face
-  struct Mesh mesh = GenMesh();
+  Mesh mesh = GenMesh();
 
   u16 k = 0;
 

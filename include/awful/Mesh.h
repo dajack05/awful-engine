@@ -19,13 +19,14 @@ struct Mesh {
   CgmVec3 rotation;
   CgmVec3 scale;
 };
+typedef struct Mesh Mesh;
 
-struct Mesh GenMesh();
-struct Mesh LoadOBJ(const char *path);
+Mesh GenMesh();
+Mesh LoadOBJ(const char *path);
 
-void MeshRotate(struct Mesh *mesh, const CgmVec3 rotation);
-void MeshSetRotation(struct Mesh *mesh, const CgmVec3 rotation);
+void MeshRotate(Mesh *mesh, const CgmVec3 rotation);
+void MeshSetRotation(Mesh *mesh, const CgmVec3 rotation);
 
-void MeshUpdate(struct Mesh *mesh);
+void MeshUpdate(Mesh *mesh);
 
 #endif

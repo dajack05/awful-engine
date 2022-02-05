@@ -1,4 +1,4 @@
-#include "loadOBJ.h"
+#include "depthRendering.h"
 
 int main(int argc, char **argv) {
 

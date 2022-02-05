@@ -17,12 +17,12 @@ void Run() {
   // Front Face
   Mesh mesh = LoadOBJ("./assets/spyro.obj");
   mesh.scale = CgmVec3_init_even(3);
-  mesh.position = CgmVec3_init(0, 6, 0);
+  mesh.position = CgmVec3_init(0, 2, 0);
 
   CgmMat4x4 proj;
   CgmMat4x4_perspective(&proj, 45.0F,
-                        (float)winSize.width / 2 / (float)winSize.height, 0.01F,
-                        100.0F);
+                        (float)winSize.width / 2 / (float)winSize.height, 0.1F,
+                        50.0F);
 
   CgmMat4x4 view;
   CgmMat4x4_identity(&view);
@@ -34,18 +34,20 @@ void Run() {
     pollInput();
     t += 0.1;
 
-    // CgmMat4x4_translate(&model, CgmVec3_init(0.0F, 0.0F, 0.2F));
-    // MeshSetRotation(
-    //     &mesh,
-    //     CgmVec3_init(cos(t / 2.0F), sin(t) - cgm_degrees_to_radians(180),
-    //     0));
-
     MeshRotate(&mesh, CgmVec3_init(0, 0.05, 0));
-
-    MeshUpdate(&mesh);
 
     DisplayClear();
 
+    mesh.position = CgmVec3_init(0, 2, 0);
+    MeshUpdate(&mesh);
+    DrawMesh(&mesh, &view, &proj, &winSize);
+
+    mesh.position = CgmVec3_init(-15, 2, 15);
+    MeshUpdate(&mesh);
+    DrawMesh(&mesh, &view, &proj, &winSize);
+
+    mesh.position = CgmVec3_init(15, 2, 15);
+    MeshUpdate(&mesh);
     DrawMesh(&mesh, &view, &proj, &winSize);
 
     DisplayPresent();

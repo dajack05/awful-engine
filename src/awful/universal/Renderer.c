@@ -1,15 +1,6 @@
 #include <awful/Display.h>
 #include <awful/Renderer.h>
 
-struct Mesh GenMesh() {
-  struct Mesh m;
-
-  CgmMat4x4_identity(&m.matrix);
-  m.count = 0;
-
-  return m;
-}
-
 CgmVec2 transformPoint(CgmMat4x4 *model, CgmMat4x4 *view, CgmMat4x4 *projection,
                        CgmVec3 point, struct WindowSize *winSize) {
   CgmVec4 newPoint = CgmVec4_init(point.x, point.y, point.z, 0);

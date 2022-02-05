@@ -15,9 +15,9 @@ void Run() {
   struct WindowSize winSize = DisplayInit(false);
 
   // Front Face
-  struct Mesh mesh = LoadOBJ("./dev/monkey.obj");
-
-  CgmMat4x4_scale(&mesh.matrix, CgmVec3_init(4, 4, 4));
+  struct Mesh mesh = LoadOBJ("./dev/spyro.obj");
+  mesh.scale = CgmVec3_init_even(3);
+  mesh.position = CgmVec3_init(0, 6, 0);
 
   CgmMat4x4 proj;
   CgmMat4x4_perspective(&proj, 45.0F,
@@ -35,7 +35,14 @@ void Run() {
     t += 0.1;
 
     // CgmMat4x4_translate(&model, CgmVec3_init(0.0F, 0.0F, 0.2F));
-    CgmMat4x4_rotate(&mesh.matrix, CgmVec3_init(0, 1, 0), 0.1F);
+    // MeshSetRotation(
+    //     &mesh,
+    //     CgmVec3_init(cos(t / 2.0F), sin(t) - cgm_degrees_to_radians(180),
+    //     0));
+
+    MeshRotate(&mesh, CgmVec3_init(0, 0.05, 0));
+
+    MeshUpdate(&mesh);
 
     DisplayClear();
 

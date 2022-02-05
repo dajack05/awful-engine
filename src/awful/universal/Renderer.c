@@ -5,6 +5,7 @@ struct Mesh GenMesh() {
   struct Mesh m;
 
   CgmMat4x4_identity(&m.matrix);
+  m.count = 0;
 
   return m;
 }

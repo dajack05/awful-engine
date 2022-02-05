@@ -2,7 +2,7 @@
 #define MESH_H
 
 #include <awful/Types.h>
-#include <awful/cgm.h>
+#include <awful/libs/cgm.h>
 
 #define MAX_VERTS 256
 #define MAX_INDEXES 256
@@ -15,5 +15,6 @@ struct Mesh {
 };
 
 struct Mesh GenMesh();
+struct Mesh LoadOBJ(const char *path);
 
 #endif

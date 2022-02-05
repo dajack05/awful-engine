@@ -1,5 +1,5 @@
 #ifndef CGM_H
-#include <awful/cgm.h>
+#include <awful/libs/cgm.h>
 #endif
 
 #include <string.h>

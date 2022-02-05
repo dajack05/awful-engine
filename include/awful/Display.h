@@ -14,7 +14,7 @@ DisplaySetChar: Set a char at a given coordinate
 */
 
 #include <awful/Types.h>
-#include <awful/cgm.h>
+#include <awful/libs/cgm.h>
 
 #define MAX_WIDTH 200
 #define MAX_HEIGHT 200

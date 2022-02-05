@@ -1,4 +1,4 @@
-#include "meshes.h"
+#include "loadOBJ.h"
 
 int main(int argc, char **argv) {
 

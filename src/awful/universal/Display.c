@@ -1,4 +1,5 @@
 #include <awful/Display.h>
+#include <awful/libs/cgm.h>
 #include <math.h>
 
 #define GRADIENT_LENGTH ((sizeof(Gradient) / sizeof(char)) - 1)

@@ -19,4 +19,4 @@ ${PROJECT_SOURCE_DIR}/include)
 add_executable(game ${ENGINE_SRC_FILES} ${TESTBED_SRC_FILES})
 add_executable(sh3d ${ENGINE_SRC_FILES} ${SH3D_SRC_FILES})
 
-# target_link_libraries(game m)
+target_link_libraries(game m)

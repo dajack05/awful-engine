@@ -2,6 +2,7 @@
 #include <awful/libs/cgm.h>
 #endif
 
+#include <math.h>
 #include <string.h>
 
 // ===========================================================================

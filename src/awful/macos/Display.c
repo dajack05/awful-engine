@@ -48,7 +48,7 @@ struct WindowSize DisplayInit(bool wide) {
   struct winsize w;
   ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
   mWidth = w.ws_col;
-  mHeight = w.ws_row + 8;
+  mHeight = w.ws_row;
 
   for (u16 i = 0; i < mWidth * mHeight; i++) {
     mBG[i] = ' ';

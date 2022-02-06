@@ -3,6 +3,7 @@
 
 #include <awful/libs/cgm.h>
 
+typedef struct Sprite Sprite;
 struct Sprite {
   CgmVec2 pos;
   CgmVec2 size;

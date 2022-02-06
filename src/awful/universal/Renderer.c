@@ -46,8 +46,6 @@ void DrawTriangle(CgmVec3 p1, CgmVec3 p2, CgmVec3 p3, CgmMat4x4 *model,
   TransformedPoint _p2 = transformPoint(model, view, projection, p2, winSize);
   TransformedPoint _p3 = transformPoint(model, view, projection, p3, winSize);
 
-  DisplaySetFloat(10, 10, _p1.depth);
-
   DrawGradientLine(_p1.canvasSpace, _p2.canvasSpace, _p1.depth, _p2.depth);
   DrawGradientLine(_p2.canvasSpace, _p3.canvasSpace, _p2.depth, _p3.depth);
   DrawGradientLine(_p3.canvasSpace, _p1.canvasSpace, _p3.depth, _p1.depth);

@@ -106,18 +106,6 @@ void DisplaySetStr(u16 x, u16 y, const char *str) {
   }
 }
 
-void DisplaySetInt(u16 x, u16 y, const int value) {
-  char str[16];
-  sprintf(str, "%d", value);
-  DisplaySetStr(x, y, str);
-}
-
-void DisplaySetFloat(u16 x, u16 y, const float value) {
-  char str[16];
-  sprintf(str, "%f", value);
-  DisplaySetStr(x, y, str);
-}
-
 void DrawSprite(struct Sprite *sprite) {
   for (int y = 0; y < sprite->size.y; y++) {
     for (int x = 0; x < sprite->size.x; x++) {
@@ -139,32 +127,6 @@ void DrawSprite(struct Sprite *sprite) {
 void DisplayClear() {
   for (int i = 0; i < mHeight; i++) {
     printf("\r\n");
-  }
-}
-
-void DrawLine(CgmVec2 from, CgmVec2 to) {
-  char c = '*';
-  double dx = to.x - from.x;
-  double dy = to.y - from.y;
-
-  double length = fabs(dy);
-  if (fabs(dx) >= length) {
-    length = fabs(dx);
-  }
-
-  dx = dx / length;
-  dy = dy / length;
-
-  double x = from.x;
-  double y = from.y;
-
-  DisplaySetChar((u16)x, (u16)y, c);
-  int i = 1;
-  while (i <= length) {
-    x += dx;
-    y += dy;
-    DisplaySetChar((u16)x, (u16)y, c);
-    i++;
   }
 }
 

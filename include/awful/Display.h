@@ -22,6 +22,7 @@ DisplaySetChar: Set a char at a given coordinate
 
 struct Sprite;
 
+typedef struct WindowSize WindowSize;
 struct WindowSize {
   u16 width;
   u16 height;
@@ -30,7 +31,7 @@ struct WindowSize {
 /**
  * Sets up the terminal and returns the size of the terminal
  */
-struct WindowSize DisplayInit(bool wide);
+WindowSize DisplayInit(bool wide);
 
 void DisplayPresent();
 

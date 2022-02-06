@@ -22,7 +22,6 @@ struct Mesh {
 typedef struct Mesh Mesh;
 
 Mesh GenMesh();
-Mesh LoadOBJ(const char *path);
 
 void MeshRotate(Mesh *mesh, const CgmVec3 rotation);
 void MeshSetRotation(Mesh *mesh, const CgmVec3 rotation);

@@ -51,8 +51,9 @@ Mkfile.old
 dkms.conf
 
 # Project Specific
-build/
+build/*
 .vscode/
 game
+sh3d
 
 .DS_Store

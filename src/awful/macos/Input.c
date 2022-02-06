@@ -19,7 +19,6 @@ void pollInput() {
 
   if (c > 0) {
     downKeys[c] = true;
-    DisplaySetInt(1, 20, c);
   }
 }
 

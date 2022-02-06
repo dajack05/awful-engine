@@ -17,7 +17,9 @@ This project uses CMake as it's build configurator. If you don't have CMake inst
 Once that's installed perform the following
 
 `cd build`
+
 `cmake ..`
+
 `make`
 
 There should now be two executable files in the repo root folder. 'game' is just a testbed app used for development, 'sh3d' is the actually useful program.

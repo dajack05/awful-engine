@@ -57,8 +57,9 @@ void Run(char *path) {
 
     DisplayPresent();
 
-    if (isKeyDown('t')) {
+    if (isKeyDown(27)) {
       should_run = false;
+      DisplayClear();
     }
 
     CgmVec3 moveVec = CgmVec3_init(0, 0, 0);

@@ -2,6 +2,7 @@
 
 #ifdef __MACOS__
 
+#include <awful/Display.h>
 #include <awful/Input.h>
 #include <unistd.h>
 

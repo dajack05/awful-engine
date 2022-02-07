@@ -14,8 +14,6 @@ I don't care... Go fix it and then leave me a PR I guess.
 ## Build Instructions
 This project uses CMake as it's build configurator. If you don't have CMake installed, install it via apt/homebrew/manual install
 
-Once that's installed perform the following
-
 If you don't already have one, make a build folder. This will keep all the cmake files in one tidy folder
 
 `mkdir build`

@@ -28,10 +28,7 @@ struct WindowSize {
   u16 height;
 };
 
-/**
- * Sets up the terminal and returns the size of the terminal
- */
-WindowSize DisplayInit(bool wide);
+void DisplayInit();
 
 void DisplayPresent();
 
@@ -46,5 +43,10 @@ void DrawSprite(struct Sprite *sprite);
 
 void DrawLine(CgmVec2 from, CgmVec2 to);
 void DrawGradientLine(CgmVec2 from, CgmVec2 to, float fromDepth, float toDepth);
+
+void DisplaySetIsWide(bool wide);
+void SetSize(WindowSize size);
+WindowSize *DisplayGetSize();
+char* DisplayGetScreen();
 
 #endif

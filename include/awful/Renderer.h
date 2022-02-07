@@ -4,7 +4,8 @@
 #include <awful/Display.h>
 #include <awful/Mesh.h>
 
-void DrawMesh(Mesh *mesh, CgmMat4x4 *view, CgmMat4x4 *projection,
-              struct WindowSize *winSize);
+void DrawMesh(Mesh *mesh, CgmMat4x4 *view, CgmMat4x4 *projection);
+void RendererClearZ();
+void RendererPresent();
 
 #endif

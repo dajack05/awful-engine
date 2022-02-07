@@ -9,7 +9,7 @@ void DrawControls() { DrawSprite(&s); }
 
 void Run(char *path) {
 
-  struct WindowSize winSize = DisplayInit(false);
+  DisplayInit();
 
   s.pos = CgmVec2_init(1, 1);
   s.data = " --[ Controls ]-- "
@@ -26,14 +26,16 @@ void Run(char *path) {
            " ---------------- ";
   s.size = CgmVec2_init(18, 12);
 
+  WindowSize *winSize = DisplayGetSize();
+
   // Front Face
   Mesh mesh = LoadOBJ(path);
   mesh.scale = CgmVec3_init_even(3);
 
   CgmMat4x4 proj;
   CgmMat4x4_perspective(&proj, 45.0F,
-                        (float)winSize.width / 2 / (float)winSize.height, 0.1F,
-                        50.0F);
+                        (float)winSize->width / 2 / (float)winSize->height,
+                        0.1F, 50.0F);
 
   CgmMat4x4 view;
   CgmMat4x4_identity(&view);
@@ -51,7 +53,7 @@ void Run(char *path) {
 
     mesh.position = CgmVec3_init(0, 2, 0);
     MeshUpdate(&mesh);
-    DrawMesh(&mesh, &view, &proj, &winSize);
+    DrawMesh(&mesh, &view, &proj);
 
     DrawControls();
 

@@ -63,69 +63,6 @@ struct WindowSize DisplayInit(bool wide) {
   return ws;
 }
 
-void DisplayPresent() {
-  if (mWide) {
-    // Double size blocks
-    for (u16 i = 0; i < mWidth * mHeight; i++) {
-      printf("%c%c", mScreen[i], mScreen[i]);
-      if (i % mWidth == mWidth - 1) {
-        printf("\r\n");
-      }
-    }
-  } else {
-    // Standard blocks
-    for (u16 i = 0; i <= mWidth * mHeight; i++) {
-      printf("%c", mScreen[i]);
-
-      // Are we at the end of the line?
-      if (mWidth > 0) {
-        if (i % mWidth == mWidth - 1) {
-          // Make sure we're NOT at the last line
-          if (i < mWidth * mHeight - mWidth) {
-            printf("\r\n");
-          }
-        }
-      }
-    }
-  }
-
-  wipeScreen();
-
-  // This can be better...
-  usleep(1000000 / TARGET_FPS);
-}
-
-void DisplaySetChar(u16 x, u16 y, char c) {
-  if (x >= 0 && x < mWidth && y >= 0 && y < mHeight) {
-    mScreen[x + y * mWidth] = c;
-  }
-}
-
-void DisplaySetStr(u16 x, u16 y, const char *str) {
-  u16 idx = x + y * mWidth;
-  for (u16 i = 0; i < strlen(str); i++) {
-    mScreen[idx + i] = str[i];
-  }
-}
-
-void DrawSprite(struct Sprite *sprite) {
-  for (int y = 0; y < (int)sprite->size.y; y++) {
-    for (int x = 0; x < (int)sprite->size.x; x++) {
-      int idx = x + y * (int)sprite->size.x;
-      // Skip if we're 'transparent'
-      if (sprite->data[idx] != ' ') {
-        int finalx = (int)sprite->pos.x + x;
-        int finaly = (int)sprite->pos.y + y;
-
-        // Don't draw out of bounds
-        if (finalx < mWidth && finaly < mHeight && finalx >= 0 && finaly >= 0) {
-          DisplaySetChar(finalx, finaly, sprite->data[idx]);
-        }
-      }
-    }
-  }
-}
-
 void DisplayClear() { system("clear"); }
 
 #endif

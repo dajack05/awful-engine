@@ -13,17 +13,18 @@
 
 void Run() {
 
-  struct WindowSize winSize = DisplayInit(false);
+  DisplayInit();
+  WindowSize *winSize = DisplayGetSize();
 
   // Front Face
   Mesh mesh = LoadOBJ("./assets/spyro.obj");
   mesh.scale = CgmVec3_init_even(3);
-  mesh.position = CgmVec3_init(0, 2, 0);
+  mesh.position = CgmVec3_init(0, 4, 0);
 
   CgmMat4x4 proj;
   CgmMat4x4_perspective(&proj, 45.0F,
-                        (float)winSize.width / 2 / (float)winSize.height, 0.1F,
-                        50.0F);
+                        (float)winSize->width / 2 / (float)winSize->height,
+                        0.1F, 50.0F);
 
   CgmMat4x4 view;
   CgmMat4x4_identity(&view);
@@ -38,22 +39,16 @@ void Run() {
     MeshRotate(&mesh, CgmVec3_init(0, 0.05, 0));
 
     DisplayClear();
+    RendererClearZ();
 
-    mesh.position = CgmVec3_init(0, 2, 0);
     MeshUpdate(&mesh);
-    DrawMesh(&mesh, &view, &proj, &winSize);
+    DrawMesh(&mesh, &view, &proj);
 
-    mesh.position = CgmVec3_init(-15, 2, 15);
-    MeshUpdate(&mesh);
-    DrawMesh(&mesh, &view, &proj, &winSize);
-
-    mesh.position = CgmVec3_init(15, 2, 15);
-    MeshUpdate(&mesh);
-    DrawMesh(&mesh, &view, &proj, &winSize);
+    RendererPresent();
 
     DisplayPresent();
 
-    if (isKeyDown('t')) {
+    if (isKeyDown(27)) {
       should_run = false;
     }
 

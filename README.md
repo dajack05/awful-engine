@@ -16,13 +16,19 @@ This project uses CMake as it's build configurator. If you don't have CMake inst
 
 Once that's installed perform the following
 
+If you don't already have one, make a build folder. This will keep all the cmake files in one tidy folder
+
+`mkdir build`
+
+Then build it!
+
 `cd build`
 
 `cmake ..`
 
 `make`
 
-There should now be two executable files in the repo root folder. 'game' is just a testbed app used for development, 'sh3d' is the actually useful program.
+There should now be two executable files in the repo root folder. 'game' is just a testbed app used for development and 'sh3d'. 'sh3d' is the command line tool you'll want to use.
 
 ## Usage
 sh3d [path to .obj file]

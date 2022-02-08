@@ -1,7 +1,10 @@
 #include <awful/Display.h>
+#include <awful/Rasterization.h>
 #include <awful/Renderer.h>
+#include <awful/Types.h>
+#include <string.h>
 
-u16 zBuffer[MAX_WIDTH * MAX_HEIGHT];
+float zBuffer[MAX_WIDTH * MAX_HEIGHT];
 
 // Helper for matrix stuff
 typedef union TransformedPoint TransformedPoint;
@@ -41,7 +44,20 @@ TransformedPoint transformPoint(CgmMat4x4 *model, CgmMat4x4 *view,
   return r;
 }
 
-void DrawZLine(CgmVec2 from, CgmVec2 to, float fromDepth, float toDepth) {
+void RendererSetZ(u16 x, u16 y, float depth) {
+  WindowSize *size = DisplayGetSize();
+  x -= 1;
+  if (x > 0 && x <= size->width && y > 0 && y <= size->height) {
+    zBuffer[x + y * size->width] = depth;
+  }
+}
+
+void RendererDrawZLine(CgmVec2 from, CgmVec2 to, float fromDepth,
+                       float toDepth) {
+  DisplaySetFloat(1, 1, fromDepth);
+  DisplaySetFloat(1, 2, toDepth);
+  DisplaySetStr(1,10, "Boom");
+  WindowSize *size = DisplayGetSize();
   double dx = to.x - from.x;
   double dy = to.y - from.y;
 
@@ -65,7 +81,7 @@ void DrawZLine(CgmVec2 from, CgmVec2 to, float fromDepth, float toDepth) {
     y += dy;
     g += gx;
 
-    zBuffer[(int)(x + y * MAX_WIDTH)] = g * 9;
+    RendererSetZ(x, y, g);
 
     i++;
   }
@@ -78,9 +94,10 @@ void DrawTriangle(CgmVec3 p1, CgmVec3 p2, CgmVec3 p3, CgmMat4x4 *model,
   TransformedPoint _p2 = transformPoint(model, view, projection, p2, winSize);
   TransformedPoint _p3 = transformPoint(model, view, projection, p3, winSize);
 
-  DrawZLine(_p1.canvasSpace, _p2.canvasSpace, _p1.depth, _p2.depth);
-  DrawZLine(_p2.canvasSpace, _p3.canvasSpace, _p2.depth, _p3.depth);
-  DrawZLine(_p3.canvasSpace, _p1.canvasSpace, _p3.depth, _p1.depth);
+  RasterDrawTri(_p1.canvasSpace, _p2.canvasSpace, _p3.canvasSpace);
+  // RendererDrawZLine(_p1.canvasSpace, _p2.canvasSpace, _p1.depth, _p2.depth);
+  // RendererDrawZLine(_p2.canvasSpace, _p3.canvasSpace, _p2.depth, _p3.depth);
+  // RendererDrawZLine(_p3.canvasSpace, _p1.canvasSpace, _p3.depth, _p1.depth);
 }
 
 void DrawMesh(Mesh *mesh, CgmMat4x4 *view, CgmMat4x4 *projection) {
@@ -94,16 +111,25 @@ void DrawMesh(Mesh *mesh, CgmMat4x4 *view, CgmMat4x4 *projection) {
   }
 }
 
+#define shadesCount 8
+char shades[] = ".:-=+*#%@";
 void RendererPresent() {
   char *screen = DisplayGetScreen();
+  WindowSize *size = DisplayGetSize();
   // Draw the buffer
-  for (u32 i = 0; i < MAX_HEIGHT * MAX_WIDTH; i++) {
-    screen[i] = '0' + zBuffer[i];
+  for (u32 i = 0; i < size->height * size->width; i++) {
+    int x = i % size->width;
+    int y = i / size->width;
+    if (zBuffer[i] > 0.0F) {
+      char shade = shades[shadesCount - (int)(zBuffer[i] * shadesCount)];
+      screen[i] = shade;
+    }
   }
 }
 
 void RendererClearZ() {
-  for (u32 i = 0; i < MAX_WIDTH * MAX_HEIGHT; i++) {
+  WindowSize *size = DisplayGetSize();
+  for (u32 i = 0; i < size->width * size->height; i++) {
     zBuffer[i] = 0;
   }
 }

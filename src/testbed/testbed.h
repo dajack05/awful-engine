@@ -17,7 +17,7 @@ void Run() {
   WindowSize *winSize = DisplayGetSize();
 
   // Front Face
-  Mesh mesh = LoadOBJ("./assets/spyro.obj");
+  Mesh mesh = LoadOBJ("./assets/plane.obj");
   mesh.scale = CgmVec3_init_even(3);
   mesh.position = CgmVec3_init(0, 4, 0);
 
@@ -38,8 +38,8 @@ void Run() {
 
     MeshRotate(&mesh, CgmVec3_init(0, 0.05, 0));
 
-    DisplayClear();
     RendererClearZ();
+    DisplayClear();
 
     MeshUpdate(&mesh);
     DrawMesh(&mesh, &view, &proj);

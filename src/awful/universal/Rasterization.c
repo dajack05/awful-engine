@@ -1,76 +1,72 @@
 #include <awful/Rasterization.h>
-#include <awful/Renderer.h>
 
-void fillBottomFlatTriangle(CgmVec2 p1, CgmVec2 p2, CgmVec2 p3) {
-  float invslope1 = (p2.x - p1.x) / (p2.y - p1.y);
-  float invslope2 = (p3.x - p1.x) / (p3.y - p1.y);
+/*
 
-  float curx1 = p1.x;
-  float curx2 = p1.x;
+An implimentation of the Barycentric algorithm.
 
-  for (int scanlineY = p1.y; scanlineY <= p2.y; scanlineY++) {
-    RendererDrawZLine(CgmVec2_init((int)curx1, scanlineY),
-                      CgmVec2_init((int)curx2, scanlineY), 0.0F, 0.0F);
-    curx1 += invslope1;
-    curx2 += invslope2;
+Keeps it simple, and is integer based.
+
+*/
+
+int max(int a, int b) {
+  if (a > b) {
+    return a;
   }
+  return b;
 }
 
-void fillTopFlatTriangle(CgmVec2 p1, CgmVec2 p2, CgmVec2 p3) {
-  float invslope1 = (p3.x - p1.x) / (p3.y - p1.y);
-  float invslope2 = (p3.x - p2.x) / (p3.y - p2.y);
-
-  float curx1 = p3.x;
-  float curx2 = p3.x;
-
-  for (int scanlineY = p3.y; scanlineY > p1.y; scanlineY--) {
-    RendererDrawZLine(CgmVec2_init((int)curx1, scanlineY),
-                      CgmVec2_init((int)curx2, scanlineY), 1.0F, 1.0F);
-    curx1 -= invslope1;
-    curx2 -= invslope2;
+int min(int a, int b) {
+  if (a < b) {
+    return a;
   }
+  return b;
 }
 
-void sortVerticesAscendingByY(CgmVec2 points[]) {
-    CgmVec2 p1 = CgmVec2_init_even(0);
-    CgmVec2 p2 = CgmVec2_init_even(0);
-    CgmVec2 p3 = CgmVec2_init_even(0);
+float InterpolatedDepth(TransformedPoint p1, TransformedPoint p2,
+                        TransformedPoint p3, float x, float y) {
 
-    for(int i=0; i<3; i++){
-        if(points[i].y > p1.y){
-            p1 = points[i];
-        }else if(points[i].y > p2.y){
-            p2 = points[i];
-        }else{
-            p3 = points[i];
-        }
+  float a = cgm_lerp(p1.depth, p2.depth, x);
+  float b = cgm_lerp(p2.depth, p3.depth, x);
+  float c = cgm_lerp(a, b, y);
+
+  return c;
+}
+
+void RasterDrawTri(TransformedPoint p1, TransformedPoint p2,
+                   TransformedPoint p3) {
+  // Generate Bounding Box
+  int maxx = max(p1.canvasSpace.x, max(p2.canvasSpace.x, p3.canvasSpace.x));
+  int minx = min(p1.canvasSpace.x, min(p2.canvasSpace.x, p3.canvasSpace.x));
+  int maxy = max(p1.canvasSpace.y, max(p2.canvasSpace.y, p3.canvasSpace.y));
+  int miny = min(p1.canvasSpace.y, min(p2.canvasSpace.y, p3.canvasSpace.y));
+
+  float maxDist = CgmVec2_len(
+      CgmVec2_sub(CgmVec2_init(maxx, maxy), CgmVec2_init(minx, miny)));
+
+  // Distance between p1 and p2
+  CgmVec2 vs1 = CgmVec2_init(p2.canvasSpace.x - p1.canvasSpace.x,
+                             p2.canvasSpace.y - p1.canvasSpace.y);
+  // Distance between p1 and p3
+  CgmVec2 vs2 = CgmVec2_init(p3.canvasSpace.x - p1.canvasSpace.x,
+                             p3.canvasSpace.y - p1.canvasSpace.y);
+
+  // Go point-by-point and test if it's within the triangle
+  for (int x = minx; x < maxx; x++) {
+    for (int y = miny; y < maxy; y++) {
+      CgmVec2 testPoint =
+          CgmVec2_init(x - p1.canvasSpace.x, y - p1.canvasSpace.y);
+
+      float crossVs1Vs2 = CgmVec2_mul_cross_vec(vs1, vs2);
+
+      float s = CgmVec2_mul_cross_vec(testPoint, vs2) / crossVs1Vs2;
+      float t = CgmVec2_mul_cross_vec(vs1, testPoint) / crossVs1Vs2;
+
+      if ((s >= 0) && (t >= 0) && (s + t <= 1)) {
+        // Find the depth for our given point
+        float d = InterpolatedDepth(p1, p2, p3, s / maxDist, t / maxDist);
+
+        RendererSetZ(x, y, d);
+      }
     }
-
-    points[0] = p1;
-    points[1] = p2;
-    points[2] = p3;
-}
-
-void RasterDrawTri(CgmVec2 p1, CgmVec2 p2, CgmVec2 p3) {
-  /* at first sort the three vertices by y-coordinate ascending so p1 is the
-   * topmost vertice */
-  CgmVec2 points[] = {p1, p2, p3};
-  sortVerticesAscendingByY(points);
-
-  /* here we know that p1.y <= p2.y <= p3.y */
-  /* check for trivial case of bottom-flat triangle */
-  if (points[1].y == points[2].y) {
-    fillBottomFlatTriangle(points[0], points[1], points[2]);
-  }
-
-  /* check for trivial case of top-flat triangle */
-  else if (points[0].y == points[1].y) {
-    fillTopFlatTriangle(points[0], points[1], points[2]);
-  } else {
-    /* general case - split the triangle in a topflat and bottom-flat one */
-    // Vertice v4 = new Vertice((int)(vt1.x + ((float)(vt2.y - vt1.y) / (float)(vt3.y - vt1.y)) * (vt3.x - vt1.x)), vt2.y);
-    CgmVec2 p4 = CgmVec2_init((int)(points[0].x + ((float)(points[1].y - points[0].y) / (float)(points[2].y - points[0].y)) * (points[2].x - points[0].x)), points[1].y);
-    fillBottomFlatTriangle(points[0], points[1], p4);
-    fillTopFlatTriangle(points[1], p4, points[2]);
   }
 }

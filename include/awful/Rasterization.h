@@ -2,7 +2,8 @@
 #define RASTERIZATION_H
 
 #include <awful/libs/cgm.h>
+#include <awful/Renderer.h>
 
-void RasterDrawTri(CgmVec2 p1, CgmVec2 p2, CgmVec2 p3);
+void RasterDrawTri(TransformedPoint p1, TransformedPoint p2, TransformedPoint p3);
 
 #endif

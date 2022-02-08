@@ -17,7 +17,7 @@ void Run() {
   WindowSize *winSize = DisplayGetSize();
 
   // Front Face
-  Mesh mesh = LoadOBJ("./assets/plane.obj");
+  Mesh mesh = LoadOBJ("./assets/spyro.obj");
   mesh.scale = CgmVec3_init_even(3);
   mesh.position = CgmVec3_init(0, 4, 0);
 

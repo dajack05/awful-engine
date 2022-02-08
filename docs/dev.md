@@ -1,8 +1,5 @@
 # Development Notes
 *Here lies all my hopes and dreams*
 
-## Feature TODOs
-- Shading
-
-## General TODOs
-- Migrate to a better sleep system
+## Things to upgrade
+- Better Triangle Fill algorithm

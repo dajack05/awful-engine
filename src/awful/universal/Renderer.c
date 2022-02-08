@@ -6,17 +6,6 @@
 
 float zBuffer[MAX_WIDTH * MAX_HEIGHT];
 
-// Helper for matrix stuff
-typedef union TransformedPoint TransformedPoint;
-union TransformedPoint {
-  struct {
-    CgmVec4 screenSpace;
-    CgmVec2 canvasSpace;
-    float depth;
-  };
-  float a[7];
-};
-
 TransformedPoint transformPoint(CgmMat4x4 *model, CgmMat4x4 *view,
                                 CgmMat4x4 *projection, CgmVec3 point,
                                 struct WindowSize *winSize) {
@@ -48,15 +37,15 @@ void RendererSetZ(u16 x, u16 y, float depth) {
   WindowSize *size = DisplayGetSize();
   x -= 1;
   if (x > 0 && x <= size->width && y > 0 && y <= size->height) {
-    zBuffer[x + y * size->width] = depth;
+    int idx = x + y * size->width;
+    if (depth < zBuffer[idx] || zBuffer[idx] == 0) {
+      zBuffer[idx] = depth;
+    }
   }
 }
 
 void RendererDrawZLine(CgmVec2 from, CgmVec2 to, float fromDepth,
                        float toDepth) {
-  DisplaySetFloat(1, 1, fromDepth);
-  DisplaySetFloat(1, 2, toDepth);
-  DisplaySetStr(1,10, "Boom");
   WindowSize *size = DisplayGetSize();
   double dx = to.x - from.x;
   double dy = to.y - from.y;
@@ -94,7 +83,8 @@ void DrawTriangle(CgmVec3 p1, CgmVec3 p2, CgmVec3 p3, CgmMat4x4 *model,
   TransformedPoint _p2 = transformPoint(model, view, projection, p2, winSize);
   TransformedPoint _p3 = transformPoint(model, view, projection, p3, winSize);
 
-  RasterDrawTri(_p1.canvasSpace, _p2.canvasSpace, _p3.canvasSpace);
+  RasterDrawTri(_p1, _p2, _p3);
+
   // RendererDrawZLine(_p1.canvasSpace, _p2.canvasSpace, _p1.depth, _p2.depth);
   // RendererDrawZLine(_p2.canvasSpace, _p3.canvasSpace, _p2.depth, _p3.depth);
   // RendererDrawZLine(_p3.canvasSpace, _p1.canvasSpace, _p3.depth, _p1.depth);
@@ -111,8 +101,8 @@ void DrawMesh(Mesh *mesh, CgmMat4x4 *view, CgmMat4x4 *projection) {
   }
 }
 
-#define shadesCount 8
-char shades[] = ".:-=+*#%@";
+#define shadesCount 9
+char shades[] = ".-:;*+=%@#";
 void RendererPresent() {
   char *screen = DisplayGetScreen();
   WindowSize *size = DisplayGetSize();

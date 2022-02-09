@@ -21,6 +21,10 @@ void Run() {
   mesh.scale = CgmVec3_init_even(3);
   mesh.position = CgmVec3_init(0, 4, 0);
 
+  Mesh map = LoadOBJ("./assets/map.obj");
+  map.scale = CgmVec3_init_even(4);
+  map.position = CgmVec3_init(0, 4, 0);
+
   CgmMat4x4 proj;
   CgmMat4x4_perspective(&proj, 45.0F,
                         (float)winSize->width / 2 / (float)winSize->height,
@@ -44,6 +48,9 @@ void Run() {
     MeshUpdate(&mesh);
     DrawMesh(&mesh, &view, &proj);
 
+    MeshUpdate(&map);
+    DrawMesh(&map, &view, &proj);
+
     RendererPresent();
 
     DisplayPresent();
@@ -66,6 +73,20 @@ void Run() {
     if (isKeyDown('d')) {
       moveVec.x = 1;
     }
+
+    if (isKeyDown('i')) {
+      CgmMat4x4_rotate(&view, CgmVec3_init(1, 0, 0), -0.1);
+    }
+    if (isKeyDown('k')) {
+      CgmMat4x4_rotate(&view, CgmVec3_init(1, 0, 0), 0.1);
+    }
+    if (isKeyDown('j')) {
+      CgmMat4x4_rotate(&view, CgmVec3_init(0, 1, 0), 0.1);
+    }
+    if (isKeyDown('l')) {
+      CgmMat4x4_rotate(&view, CgmVec3_init(0, 1, 0), -0.1);
+    }
+
     if (isKeyDown('q')) {
       moveVec.y = -1;
     }

@@ -12,13 +12,6 @@
 #include <termios.h>
 #include <unistd.h>
 
-char mBG[MAX_WIDTH * MAX_HEIGHT];
-char mScreen[MAX_WIDTH * MAX_HEIGHT];
-u16 mWidth = 0;
-u16 mHeight = 0;
-
-bool mWide = false;
-
 struct termios orig_termios;
 
 void disableRawMode() { tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios); }
@@ -35,32 +28,15 @@ void enableRawMode() {
   tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }
 
-void wipeScreen() {
-  for (u16 i = 0; i < mWidth * mHeight; i++) {
-    mScreen[i] = mBG[i];
-  }
-}
-
-struct WindowSize DisplayInit(bool wide) {
+void DisplayInit() {
   enableRawMode();
-  mWide = wide;
 
   struct winsize w;
+  WindowSize win;
   ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-  mWidth = w.ws_col;
-  mHeight = w.ws_row;
-
-  for (u16 i = 0; i < mWidth * mHeight; i++) {
-    mBG[i] = ' ';
-  }
-
-  wipeScreen();
-
-  struct WindowSize ws;
-  ws.width = mWidth;
-  ws.height = mHeight;
-
-  return ws;
+  win.width = w.ws_col;
+  win.height = w.ws_row;
+  DisplaySetSize(win);
 }
 
 void DisplayClear() { system("clear"); }

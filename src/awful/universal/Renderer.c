@@ -83,11 +83,10 @@ void DrawTriangle(CgmVec3 p1, CgmVec3 p2, CgmVec3 p3, CgmMat4x4 *model,
   TransformedPoint _p2 = transformPoint(model, view, projection, p2, winSize);
   TransformedPoint _p3 = transformPoint(model, view, projection, p3, winSize);
 
-  RasterDrawTri(_p1, _p2, _p3);
-
-  // RendererDrawZLine(_p1.canvasSpace, _p2.canvasSpace, _p1.depth, _p2.depth);
-  // RendererDrawZLine(_p2.canvasSpace, _p3.canvasSpace, _p2.depth, _p3.depth);
-  // RendererDrawZLine(_p3.canvasSpace, _p1.canvasSpace, _p3.depth, _p1.depth);
+  if ((_p1.depth > 0.0F && _p2.depth > 0.0F && _p3.depth > 0.0F) &&
+      (_p1.depth < 1.0F && _p2.depth < 1.0F && _p3.depth < 1.0F)) {
+    RasterDrawTri(_p1, _p2, _p3);
+  }
 }
 
 void DrawMesh(Mesh *mesh, CgmMat4x4 *view, CgmMat4x4 *projection) {
@@ -102,7 +101,7 @@ void DrawMesh(Mesh *mesh, CgmMat4x4 *view, CgmMat4x4 *projection) {
 }
 
 #define shadesCount 9
-char shades[] = ".-:;*+=%@#";
+char shades[] = ".:-=+*#%@";
 void RendererPresent() {
   char *screen = DisplayGetScreen();
   WindowSize *size = DisplayGetSize();

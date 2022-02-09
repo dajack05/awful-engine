@@ -50,6 +50,7 @@ void Run(char *path) {
     MeshRotate(&mesh, CgmVec3_init(0, 0.05, 0));
 
     DisplayClear();
+    RendererClearZ();
 
     mesh.position = CgmVec3_init(0, 2, 0);
     MeshUpdate(&mesh);
@@ -57,6 +58,7 @@ void Run(char *path) {
 
     DrawControls();
 
+    RendererPresent();
     DisplayPresent();
 
     if (isKeyDown(27)) {

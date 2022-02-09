@@ -45,8 +45,8 @@ void DrawLine(CgmVec2 from, CgmVec2 to);
 void DrawGradientLine(CgmVec2 from, CgmVec2 to, float fromDepth, float toDepth);
 
 void DisplaySetIsWide(bool wide);
-void SetSize(WindowSize size);
+void DisplaySetSize(WindowSize size);
 WindowSize *DisplayGetSize();
-char* DisplayGetScreen();
+char *DisplayGetScreen();
 
 #endif

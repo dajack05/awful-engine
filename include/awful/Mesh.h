@@ -4,8 +4,8 @@
 #include <awful/Types.h>
 #include <awful/libs/cgm.h>
 
-#define MAX_VERTS 512
-#define MAX_INDEXES 4096
+#define MAX_VERTS 1024
+#define MAX_INDEXES MAX_VERTS * 4
 
 struct Mesh {
   // Data

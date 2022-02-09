@@ -14,8 +14,8 @@ void pollInput() {
     downKeys[i] = false;
   }
 
-  char c = 0;
-  read(STDIN_FILENO, &c, 1);
+  char c;
+  read(STDIN_FILENO, &c, sizeof(char));
 
   if (c > 0) {
     downKeys[c] = true;

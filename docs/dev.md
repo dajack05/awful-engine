@@ -3,3 +3,4 @@
 
 ## Things to upgrade
 - Better Triangle Fill algorithm
+- Triangle Culling

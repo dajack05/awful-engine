@@ -36,7 +36,9 @@ TransformedPoint transformPoint(CgmMat4x4 *model, CgmMat4x4 *view,
 void RendererSetZ(u16 x, u16 y, float depth) {
   WindowSize *size = DisplayGetSize();
   x -= 1;
-  if (x > 0 && x <= size->width && y > 0 && y <= size->height) {
+  bool isWithinScreen = x >= 0 && x < size->width && y > 0 && y <= size->height;
+  bool isPositiveDepth = depth > 0.0F;
+  if (isWithinScreen && isPositiveDepth) {
     int idx = x + y * size->width;
     if (depth < zBuffer[idx] || zBuffer[idx] == 0) {
       zBuffer[idx] = depth;

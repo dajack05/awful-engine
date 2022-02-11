@@ -29,7 +29,7 @@ float InterpolatedDepth(TransformedPoint p1, TransformedPoint p2,
   float b = cgm_lerp(p2.depth, p3.depth, y);
   float c = cgm_lerp(a, b, y);
 
-  return p1.depth;
+  return c;
 }
 
 void RasterDrawTri(TransformedPoint p1, TransformedPoint p2,
